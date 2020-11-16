@@ -1,25 +1,55 @@
+import React, {useEffect, useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+const App = () => {
+  //  const initialState = {
+     
+  //  }
+  /**
+   * Determina si el checkbox deberia estar checkeado basado en el contenido del localstorage
+   */
+ const [checked, setChecked] = useState(localStorage.getItem("theme") === "dark" ? true : false)
+
+
+/* cada vez que el estado checked cambie, actualiza la propiedad
+  data-theme en el HTML para que use el tema que estamos almacenando
+  en el localStorage
+*/
+useEffect(() => {
+  document.getElementsByTagName("HTML")[0]
+  .setAttribute("data-theme", localStorage.getItem("theme"))
+}, [checked])
+
+/* Actualiza el estado checked y el contenido de nuestro objeto 
+theme en el localStorage basados en el checkbox*/
+const toggleThemeChange = () => {
+  if(checked === false) {
+    localStorage.setItem("theme", "dark");
+    setChecked(true)
+  } else {
+    localStorage.setItem("theme", "light");
+    setChecked(false);
+  }
+}
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          click para cambiar el tema
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <label>
+          <input 
+            type="checkbox"
+            defaultChecked={checked}
+            onChange={() => toggleThemeChange()}
+          />
+        </label>
       </header>
     </div>
   );
 }
+  
 
 export default App;
